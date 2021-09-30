@@ -1,0 +1,883 @@
+---
+swagger: "2.0"
+info:
+  description: "Prueba de roles"
+  version: "1.0.0"
+  title: "Swagger Roles"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/"
+tags:
+- name: "usuarios"
+  description: "Accede a los usuarios"
+- name: "supervisores"
+  description: "Accede a los supervisores y usuarios "
+- name: "administradores"
+  description: "Accede a los administradores y supervisores"
+schemes:
+- "http"
+paths:
+  /usuarios:
+    get:
+      tags:
+      - "usuarios"
+      summary: "Get all users"
+      operationId: "getAllUsers"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                user:
+                  $ref: "#/definitions/UsuarioGet"
+        "400":
+          description: "Error"
+      x-swagger-router-controller: "Usuarios"
+    post:
+      tags:
+      - "usuarios"
+      summary: "Crea el usuario del super"
+      description: ""
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "El username que sera eliminado"
+        required: true
+        schema:
+          $ref: "#/definitions/UsuariosSuper"
+      responses:
+        "200":
+          description: "Success input"
+          schema:
+            $ref: "#/definitions/UsuarioGet"
+        "400":
+          description: "Erro"
+      x-swagger-router-controller: "Usuarios"
+  /usuarios/{id}:
+    get:
+      tags:
+      - "usuarios"
+      summary: "Muestra la informacion del usuario"
+      description: "Muestra la informacion del username dado"
+      operationId: "getUserByUsername"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Username a mostrar"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/UsuarioGet"
+        "400":
+          description: "Username invalido"
+        "404":
+          description: "Username no encontrado"
+      x-swagger-router-controller: "Usuarios"
+    put:
+      tags:
+      - "usuarios"
+      summary: "Actualiza el usuario"
+      description: ""
+      operationId: "updateUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Usuario actualizado"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Usuario"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/UsuarioGet"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "usuario no encontrado"
+      x-swagger-router-controller: "Usuarios"
+    delete:
+      tags:
+      - "usuarios"
+      summary: "Delete user by super"
+      description: "Delete user"
+      operationId: "deleteUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "El username que sera eliminado"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+        "400":
+          description: "Username no valido"
+        "404":
+          description: "Username no encontrado"
+      x-swagger-router-controller: "Usuarios"
+  /supervisores/usuarios/{id_super}/{id_user}:
+    get:
+      tags:
+      - "supervisores"
+      summary: "Update user by super"
+      description: "Update user by super"
+      operationId: "getUserbySuper"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id_super"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "id_user"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ArrayUser"
+      x-swagger-router-controller: "Supervisores"
+    post:
+      tags:
+      - "supervisores"
+      summary: "Crea el usuario del super"
+      description: ""
+      operationId: "createUserSupervisor"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id_super"
+        in: "path"
+        description: ""
+        required: true
+        type: "string"
+      - name: "id_user"
+        in: "path"
+        description: "Crea un obj supervisor"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "El username que sera eliminado"
+        required: true
+        schema:
+          $ref: "#/definitions/UsuariosSuper"
+      responses:
+        "200":
+          description: "Success input"
+          schema:
+            $ref: "#/definitions/ArrayUser"
+        "400":
+          description: "Error"
+      x-swagger-router-controller: "Supervisores"
+    put:
+      tags:
+      - "supervisores"
+      summary: "Update user by super"
+      description: "Update user by super"
+      operationId: "updateUserbySuper"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id_super"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "id_user"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/UsuariosSuper"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ArrayUser"
+      x-swagger-router-controller: "Supervisores"
+    delete:
+      tags:
+      - "supervisores"
+      summary: "Delete user by super"
+      description: "Delete user"
+      operationId: "deleteUserbySuper"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id_super"
+        in: "path"
+        description: "El username que sera eliminado"
+        required: true
+        type: "string"
+      - name: "id_user"
+        in: "path"
+        description: "El username que sera eliminado"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+        "400":
+          description: "Username no valido"
+        "404":
+          description: "Username no encontrado"
+      x-swagger-router-controller: "Supervisores"
+  /supervisores:
+    get:
+      tags:
+      - "supervisores"
+      summary: "Get all supervisores"
+      operationId: "getAllSuper"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                super:
+                  $ref: "#/definitions/SupervisoresGet"
+        "400":
+          description: "Error"
+      x-swagger-router-controller: "Supervisores"
+  /supervisores/{id}:
+    get:
+      tags:
+      - "supervisores"
+      summary: "Devuelve la informacion "
+      description: "Devuelve un supervisor"
+      operationId: "getSupervisorByUsername"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ArraySuper"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Pet not found"
+      x-swagger-router-controller: "Supervisores"
+    post:
+      tags:
+      - "supervisores"
+      summary: "Crea el usuario del super"
+      description: ""
+      operationId: "createSuper"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "El username que sera eliminado"
+        required: true
+        schema:
+          $ref: "#/definitions/UsuariosSuper"
+      responses:
+        "200":
+          description: "Success input"
+          schema:
+            $ref: "#/definitions/ArraySuper"
+        "400":
+          description: "Error"
+      x-swagger-router-controller: "Supervisores"
+    put:
+      tags:
+      - "supervisores"
+      summary: "Actualiza el supervisor"
+      description: "Solo se hace por el usuario especifico"
+      operationId: "updateSupervisor"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Actualizar supervisor"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Actualizar supervisor"
+        required: true
+        schema:
+          $ref: "#/definitions/Supervisores"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ArraySuper"
+        "400":
+          description: "Usuario invalido"
+        "404":
+          description: "Usuario no encontrado"
+      x-swagger-router-controller: "Supervisores"
+    delete:
+      tags:
+      - "supervisores"
+      summary: "Delete user by super"
+      description: "Delete user"
+      operationId: "deleteSuper"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "El username que sera eliminado"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+        "400":
+          description: "Username no valido"
+        "404":
+          description: "Username no encontrado"
+      x-swagger-router-controller: "Supervisores"
+  /administradores:
+    get:
+      tags:
+      - "administradores"
+      summary: "Get all administradores"
+      operationId: "getAllAdmin"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                super:
+                  $ref: "#/definitions/Administrador"
+        "400":
+          description: "Error"
+      x-swagger-router-controller: "Administradores"
+    post:
+      tags:
+      - "administradores"
+      summary: "Agrega un nuevo admin"
+      description: ""
+      operationId: "addAdmin"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Administrador agregado"
+        required: true
+        schema:
+          $ref: "#/definitions/Administrador"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            xml:
+              name: "Admin"
+            type: "array"
+            items:
+              $ref: "#/definitions/Administrador"
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "Administradores"
+  /administradores/{id}:
+    get:
+      tags:
+      - "administradores"
+      summary: "Muestra el admin especifico"
+      description: "Devuelve un administrador"
+      operationId: "getAdminByUsername"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Administrador"
+        "400":
+          description: "Usuario invalido supplied"
+        "404":
+          description: "usuario not found"
+      security:
+      - roles_auth:
+        - "write:administrador"
+        - "read:administrador"
+      x-swagger-router-controller: "Administradores"
+    put:
+      tags:
+      - "administradores"
+      summary: "Actualiza el administrador"
+      description: "Solo se hace por el usuario especifico"
+      operationId: "updateAdministrador"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Actualizar supervisor"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Actualizar supervisor"
+        required: true
+        schema:
+          $ref: "#/definitions/Supervisores"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Administrador"
+        "400":
+          description: "Usuario invalido"
+        "404":
+          description: "Usuario no encontrado"
+      security:
+      - roles_auth:
+        - "write:administrador"
+        - "read:administrador"
+      x-swagger-router-controller: "Administradores"
+    delete:
+      tags:
+      - "administradores"
+      summary: "Elimina el administrador por username"
+      description: "Elimina el administrador"
+      operationId: "deleteAdministrador"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "El username que sera eliminado"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+        "400":
+          description: "Username no valido"
+        "404":
+          description: "Username no encontrado"
+      security:
+      - roles_auth:
+        - "write:administrador"
+        - "read:administrador"
+      x-swagger-router-controller: "Administradores"
+  /administradores/supervisores/{id_admin}/{id_super}:
+    get:
+      tags:
+      - "administradores"
+      summary: "Update super by admin"
+      description: "Update super by admin"
+      operationId: "getSuperbyAdmin"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id_admin"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "id_super"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ArraySuper"
+      x-swagger-router-controller: "Administradores"
+    post:
+      tags:
+      - "administradores"
+      summary: "Create supervisor"
+      description: "Create supervisor by admin"
+      operationId: "createSuperbyAdmin"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id_admin"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "id_super"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Create super"
+        required: false
+        schema:
+          $ref: "#/definitions/SupervisoresAdmin"
+      responses:
+        "200":
+          description: "success"
+          schema:
+            $ref: "#/definitions/SupervisoresAdmin"
+        "400":
+          description: "Error"
+      x-swagger-router-controller: "Administradores"
+    put:
+      tags:
+      - "administradores"
+      summary: "Update supervisor"
+      description: "Update supervisor by admin"
+      operationId: "updateSuperbyAdmin"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id_admin"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "id_super"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SupervisoresAdmin"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SupervisoresAdmin"
+        "400":
+          description: "Error 400"
+        "404":
+          description: "Erro 404"
+      x-swagger-router-controller: "Administradores"
+    delete:
+      tags:
+      - "administradores"
+      summary: "Delete supervisor"
+      description: "Delete supervisor by admin"
+      operationId: "deleteSuperbyAdmin"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id_admin"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "id_super"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "success"
+      x-swagger-router-controller: "Administradores"
+securityDefinitions:
+  roles_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:administrador: "Modifica al supervisor"
+      read:administrador: "Acceso a todos los datos"
+      write:supervisor: "Modifica al usuario"
+      read:supervisor: "Accede desde supervisor hasta usuarios"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  ArrayUser:
+    type: "array"
+    items:
+      $ref: "#/definitions/UsuariosSuper"
+  ArraySuper:
+    type: "array"
+    items:
+      $ref: "#/definitions/SupervisoresAdmin"
+  Administrador:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      rol:
+        type: "string"
+        default: "Administrador"
+      name:
+        type: "string"
+      username:
+        type: "string"
+      password:
+        type: "string"
+      email:
+        type: "string"
+      departamento:
+        type: "string"
+    xml:
+      name: "Administrador"
+    example:
+      password: "password"
+      name: "name"
+      departamento: "departamento"
+      id: 0
+      rol: "Administrador"
+      email: "email"
+      username: "username"
+  Supervisores:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        description: "Nombre del supervisor"
+      username:
+        type: "string"
+      password:
+        type: "string"
+      departamento:
+        type: "string"
+      email:
+        type: "string"
+    xml:
+      name: "Supervisores"
+  SupervisoresGet:
+    type: "object"
+    properties:
+      id_admin:
+        type: "integer"
+        format: "int64"
+      id:
+        type: "integer"
+        format: "int64"
+      rol:
+        type: "string"
+        default: "Supervisor"
+      name:
+        type: "string"
+        description: "Nombre del supervisor"
+      username:
+        type: "string"
+      password:
+        type: "string"
+      departamento:
+        type: "string"
+      email:
+        type: "string"
+    xml:
+      name: "Supervisores"
+  SupervisoresAdmin:
+    type: "object"
+    properties:
+      id_admin:
+        type: "integer"
+        format: "int64"
+      id_super:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      rol:
+        type: "string"
+        default: "Supervisor"
+      name:
+        type: "string"
+        description: "Nombre del supervisor"
+      password:
+        type: "string"
+      departamento:
+        type: "string"
+      email:
+        type: "string"
+    example:
+      password: "password"
+      id_super: 6
+      id_admin: 0
+      name: "name"
+      departamento: "departamento"
+      rol: "Supervisor"
+      email: "email"
+      username: "username"
+  UsuariosSuper:
+    type: "object"
+    properties:
+      id_super:
+        type: "integer"
+        format: "int64"
+      id_user:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      rol:
+        type: "string"
+        default: "usuario"
+      name:
+        type: "string"
+        description: "Nombre del supervisor"
+      password:
+        type: "string"
+      departamento:
+        type: "string"
+      email:
+        type: "string"
+  Usuario:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      departamento:
+        type: "string"
+    xml:
+      name: "Usuario"
+  UsuarioGet:
+    type: "object"
+    properties:
+      id_super:
+        type: "integer"
+        format: "int64"
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      rol:
+        type: "string"
+        default: "usuario"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      departamento:
+        type: "string"
+    xml:
+      name: "Usuario"
+    example:
+      firstName: "firstName"
+      password: "password"
+      id_super: 0
+      departamento: "departamento"
+      id: 6
+      rol: "usuario"
+      email: "email"
+      username: "username"
+  Usuarios:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      rol:
+        type: "string"
+        default: "Usuario"
+      name:
+        type: "string"
+        example: "Juan"
+      username:
+        type: "string"
+      password:
+        type: "string"
+      departamento:
+        type: "string"
+      email:
+        type: "string"
+    xml:
+      name: "Usuario"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
