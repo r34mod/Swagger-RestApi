@@ -1,5 +1,49 @@
 'use strict';
 
+var user = [
+  { 
+    id_super: 1,
+    id:1,
+    username:"Mario01",
+    firstname:"Mario",
+    rol:"usuario",
+    email:"usuario@hotmail.es",
+    password:"1234",
+    departmento:"AF"
+  },
+  { 
+    id_super: 1,
+    id:2,
+    username:"Paco01",
+    firstname:"Paco",
+    rol:"usuario",
+    email:"usuario@hotmail.es",
+    password:"1234",
+    departmento:"AF"
+  },
+  {
+    id_super: 2,
+    id:3,
+    username:"Maria16",
+    firstname:"Maria",
+    rol:"usuario",
+    email:"usuario@hotmail.es",
+    password:"1234",
+    departmento:"AF"
+  },
+  {
+    id_super: 2,
+    id:4,
+    username:"Pedro",
+    firstname:"Pedro",
+    rol:"usuario",
+    email:"usuario@hotmail.es",
+    password:"1234",
+    departmento:"AF"
+  }
+];
+
+
 var supers = [
   {
     id_admin: 1,
@@ -23,6 +67,8 @@ var supers = [
   }
 ]
 
+var longSuper = supers.length;
+var longUser = user.length;
 /**
  * Crea el usuario del super
  * 
@@ -33,13 +79,19 @@ var supers = [
  **/
 exports.createSuper = function(id,body) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-      body:[supers.push(body)]
-};
-    if(supers.length > 0){
-      resolve(examples[Object.keys(examples)[0]]) = supers;
+    if(id<=longSuper){
+      console.log("error id supers");
+    }else{
+      longSuper++;
+      var examples = {};
+      examples['application/json'] = {
+        body:[supers.push(body)]
+    };
+      if(supers.length > 0){
+        resolve(examples[Object.keys(examples)[0]]) = supers;
+      }
     }
+   
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -60,12 +112,17 @@ exports.createSuper = function(id,body) {
  **/
 exports.createUserSupervisor = function(id_super,id_user,body) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-      body:[supers.push(body)]
-};
-    if(supers.length > 0){
-      resolve(examples[Object.keys(examples)[0]]) = supers;
+    if(id_user <= longUser){
+      console.log("error user super");
+    }else{
+      longUser++;
+      var examples = {};
+      examples['application/json'] = {
+        body:[user.push(body)]
+      };
+      if(user.length > 0){
+        resolve(examples[Object.keys(examples)[0]]) = user;
+      }
     }
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -85,7 +142,18 @@ exports.createUserSupervisor = function(id_super,id_user,body) {
  **/
 exports.deleteSuper = function(id) {
   return new Promise(function(resolve, reject) {
-    resolve();
+    for(var i = 0; i < user.length; i++) {
+      if(user[i].id_super != id){
+        supers.splice((id-1),1);
+        resolve();
+      }else{
+        var examples = {};
+      examples['application/json'] = {
+        body:'NOT success'
+    };
+      }
+    }
+    
   });
 }
 
@@ -100,6 +168,7 @@ exports.deleteSuper = function(id) {
  **/
 exports.deleteUserbySuper = function(id_super,id_user) {
   return new Promise(function(resolve, reject) {
+    user.splice((id_user-1),1);
     resolve();
   });
 }
@@ -172,7 +241,7 @@ exports.getUserbySuper = function(id_super,id_user) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      body: [supers[id_super-1]]
+      body: [user[id_super-1]]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -193,9 +262,10 @@ exports.getUserbySuper = function(id_super,id_user) {
  **/
 exports.updateSupervisor = function(id,body) {
   return new Promise(function(resolve, reject) {
+    supers.splice((id-1),1);
     var examples = {};
     examples['application/json'] = {
-      body:[supers[id-1].push(body)]
+      body:[supers.splice((id-1),0,(body))]
     };
     if(supers.length > 0){
       resolve(examples[Object.keys(examples)[0]]) = supers;
@@ -221,12 +291,13 @@ exports.updateSupervisor = function(id,body) {
  **/
 exports.updateUserbySuper = function(id_super,id_user,body) {
   return new Promise(function(resolve, reject) {
+    user.splice((id-1),1);
     var examples = {};
     examples['application/json'] = {
-      body:[supers[id_super-1].push(body)]
+      body:[user.splice((id-1),0,(body))]
     };
-    if(supers.length > 0){
-      resolve(examples[Object.keys(examples)[0]]) = supers;
+    if(user.length > 0){
+      resolve(examples[Object.keys(examples)[0]]) = user;
     }
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

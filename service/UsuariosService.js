@@ -35,15 +35,17 @@ var user = [
   {
     id_super: 2,
     id:4,
-    username:"Mario01",
-    firstname:"Mario",
+    username:"Pedro",
+    firstname:"Pedro",
     rol:"usuario",
     email:"usuario@hotmail.es",
     password:"1234",
     departmento:"AF"
   }
 ];
+console.log(user.length);
 
+var long = user.length;
 /**
  * Crea el usuario del super
  * 
@@ -51,16 +53,22 @@ var user = [
  * body UsuariosSuper El username que sera eliminado
  * returns UsuarioGet
  **/
-exports.createUser = function(body) {
+exports.createUser = function(id,body) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-      body:[user.push(body)]
-    };
-    
-    if(user.length > 0){
-      resolve(examples[Object.keys(examples)[0]]) = user;
+    if(id<=long){
+      console.log("error");
+    }else{
+      long++;
+      var examples = {};
+      examples['application/json'] = {
+        body:[user.push(body)]
+      };
+      
+      if(user.length > 0){
+        resolve(examples[Object.keys(examples)[0]]) = user;
+      }
     }
+   
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -79,6 +87,7 @@ exports.createUser = function(body) {
  **/
 exports.deleteUser = function(id) {
   return new Promise(function(resolve, reject) {
+    user.splice((id-1),1);
     resolve();
   });
 }
@@ -146,10 +155,10 @@ exports.getUserByUsername = function(id) {
  **/
 exports.updateUser = function(id,body) {
   return new Promise(function(resolve, reject) {
-    
+    user.splice((id-1),1);
     var examples = {};
     examples['application/json'] = {
-      body:[user[id-1].push(body)]
+      body:[user.splice((id-1),0,(body))]
     };
     if(user.length > 0){
       resolve(examples[Object.keys(examples)[0]]) = user;

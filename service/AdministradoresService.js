@@ -11,8 +11,35 @@ var admin = [
     password: "1234",
     id_super: 2
   }
-]
+];
 
+
+var supers = [
+  {
+    id_admin: 1,
+    id: 1,
+    username: "Juan01",
+    firstname: "Juan",
+    rol: "supervisor",
+    email: "usuario@hotmail.es",
+    password: "1234",
+    departmento: "AF"
+  },
+  {
+    id_admin: 2,
+    id: 2,
+    username: "Mario01",
+    firstname: "Mario",
+    rol: "supervisor",
+    email: "usuario@hotmail.es",
+    password: "1234",
+    departmento: "AF"
+  }
+];
+
+var longAdmin = admin.length;
+
+var longSuper = supers.length;
 /**
  * Agrega un nuevo admin
  * 
@@ -20,15 +47,26 @@ var admin = [
  * body Administrador Administrador agregado
  * returns List
  **/
-exports.addAdmin = function(body) {
+exports.addAdmin = function(id,body) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-      body:[admin.push(body)]
-    };
-    if(admin.length > 0){
-      resolve(examples[Object.keys(examples)[0]]) = admin;
+    /**
+     *  Hacer variable con la longitud del array y meter las id
+     *  let cont = admin.length();
+     * 
+     */
+    if(id<=longAdmin){
+      console.log("error admin");
+    }else{
+      longAdmin++;
+      var examples = {};
+      examples['application/json'] = {
+        body:[admin.push(body)]
+      };
+      if(admin.length > 0){
+        resolve(examples[Object.keys(examples)[0]]) = admin;
+      }
     }
+    
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -48,14 +86,21 @@ exports.addAdmin = function(body) {
  * returns SupervisoresAdmin
  **/
 exports.createSuperbyAdmin = function(id_admin,id_super,body) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-      body:[admin.push(body)]
-    };
-    if(admin.length > 0){
-      resolve(examples[Object.keys(examples)[0]]) = admin;
-    }
+   
+    return new Promise(function(resolve, reject) {
+      if(id_super<=longSuper){
+        console.log("Error super admin");
+      }else{
+        longSuper++;
+        var examples = {};
+        examples['application/json'] = {
+          body:[supers.push(body)]
+        };
+        if(supers.length > 0){
+          resolve(examples[Object.keys(examples)[0]]) = supers;
+        }
+      }
+    
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -74,6 +119,7 @@ exports.createSuperbyAdmin = function(id_admin,id_super,body) {
  **/
 exports.deleteAdministrador = function(id) {
   return new Promise(function(resolve, reject) {
+    admin.splice((id-1), 1);
     resolve();
   });
 }
@@ -89,6 +135,7 @@ exports.deleteAdministrador = function(id) {
  **/
 exports.deleteSuperbyAdmin = function(id_admin,id_super) {
   return new Promise(function(resolve, reject) {
+    supers.splice((id_super-1),1);
     resolve();
   });
 }
@@ -154,8 +201,11 @@ exports.getSuperbyAdmin = function(id_admin,id_super) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      body:[admin[id_super-1]]
-};
+      body:[supers[id_super-1]]
+    };
+    if(supers.length > 0){
+      resolve(examples[Object.keys(examples)[0]]) = supers;
+    }
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -175,9 +225,10 @@ exports.getSuperbyAdmin = function(id_admin,id_super) {
  **/
 exports.updateAdministrador = function(id,body) {
   return new Promise(function(resolve, reject) {
+    admin.splice((id-1),1);
     var examples = {};
     examples['application/json'] = {
-      body:[admin[id-1].push(body)]
+      body:[admin.splice((id-1),0,(body))]
     };
     if(admin.length > 0){
       resolve(examples[Object.keys(examples)[0]]) = admin;
@@ -202,8 +253,14 @@ exports.updateAdministrador = function(id,body) {
  **/
 exports.updateSuperbyAdmin = function(id_admin,id_super,body) {
   return new Promise(function(resolve, reject) {
+    supers.splice((id-1),1);
     var examples = {};
-    examples['application/json'] = {"empty": false};
+    examples['application/json'] = {
+      body:[supers.splice((id-1),0,(body))]
+    };
+    if(supers.length > 0){
+      resolve(examples[Object.keys(examples)[0]]) = supers;
+    }
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
