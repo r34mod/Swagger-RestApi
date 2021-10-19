@@ -4,8 +4,9 @@ var utils = require('../utils/writer.js');
 var Administradores = require('../service/AdministradoresService');
 
 module.exports.addAdmin = function addAdmin (req, res, next) {
+  var id = req.swagger.params['id'].value;
   var body = req.swagger.params['body'].value;
-  Administradores.addAdmin(body)
+  Administradores.addAdmin(id,body)
     .then(function (response) {
       utils.writeJson(res, response);
     })
